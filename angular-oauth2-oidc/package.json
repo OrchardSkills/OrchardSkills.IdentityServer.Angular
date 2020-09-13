@@ -66,7 +66,6 @@
     "cpr": "^3.0.1",
     "cz-conventional-changelog": "^3.0.2",
     "github-contributors-list": "^1.2.4",
-    "husky": "^3.0.9",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~5.0.0",
@@ -84,11 +83,6 @@
     "ts-node": "~8.6.2",
     "tslint": "~6.1.0",
     "typescript": "^3.9.5"
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
   },
   "config": {
     "commitizen": {
