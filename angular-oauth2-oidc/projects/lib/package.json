@@ -1,0 +1,17 @@
+{
+  "name": "angular-oauth2-oidc",
+  "license": "MIT",
+  "author": {
+    "name": "Manfred Steyer"
+  },
+  "version": "10.0.2",
+  "repository": "manfredsteyer/angular-oauth2-oidc",
+  "peerDependencies": {
+    "@angular/common": ">=8.0.0",
+    "@angular/core": ">=8.0.0"
+  }
+,
+  "dependencies": {
+    "tslib": "^2.0.0"
+  }
+}

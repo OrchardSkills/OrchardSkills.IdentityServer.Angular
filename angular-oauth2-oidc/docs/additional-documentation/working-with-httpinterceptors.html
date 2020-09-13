@@ -1,0 +1,168 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>angular-oauth2-oidc</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">angular-oauth2-oidc</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content additional-page">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   
+
+
+
+
+<h1 id="interceptors">Interceptors</h1>
+<p>Since 3.1 the library uses a default HttpInterceptor that takes care about transmitting the access_token to the resource server and about error handling for security related errors (HTTP status codes 401 and 403) received from the resource server. To put in on, just set <code>sendAccessToken</code> to <code>true</code> and set <code>allowedUrls</code> to an array with prefixes for the respective urls. Use lower case for the prefixes:</p>
+<div><pre class="line-numbers"><code class="language-TypeScript">OAuthModule.forRoot({
+    resourceServer: {
+        allowedUrls: [&#39;http://www.angular.at/api&#39;],
+        sendAccessToken: true
+    }
+})</code></pre></div><p>You can provide an error handler for the urls white listed here by provding a service for the token <code>OAuthResourceServerErrorHandler</code>.</p>
+<p>To implement such a service, implement the abstract class <code>OAuthResourceServerErrorHandler</code>. The following example shows the default implemantion that just passes the cought error through:</p>
+<div><pre class="line-numbers"><code class="language-TypeScript">export class OAuthNoopResourceServerErrorHandler implements OAuthResourceServerErrorHandler {
+
+    handleError(err: HttpResponse&lt;any&gt;): Observable&lt;any&gt; {
+        return _throw(err);
+    }
+
+}</code></pre></div><h2 id="custom-interceptors">Custom Interceptors</h2>
+<p>Feel free to write custom interceptors but keep in mind that injecting the <code>OAuthService</code> into them creates a circular dependency which leads to an error. The easiest way to prevent this is to use the OAuthStorage directly which also provides the access_token:</p>
+<div><pre class="line-numbers"><code class="language-TypeScript">import { Injectable, Inject, Optional } from &#39;&#64;angular/core&#39;;
+import { OAuthService, OAuthStorage } from &#39;angular-oauth2-oidc&#39;;
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse, HttpErrorResponse } from &#39;&#64;angular/common/http&#39;;
+import {Observable} from &#39;rxjs/Observable&#39;;
+import { OAuthResourceServerErrorHandler } from &quot;./resource-server-error-handler&quot;;
+import { OAuthModuleConfig } from &quot;../oauth-module.config&quot;;
+
+import &#39;rxjs/add/operator/catch&#39;;
+
+&#64;Injectable()
+export class DefaultOAuthInterceptor implements HttpInterceptor {
+
+    constructor(
+        private authStorage: OAuthStorage,
+        private errorHandler: OAuthResourceServerErrorHandler,
+        &#64;Optional() private moduleConfig: OAuthModuleConfig
+    ) {
+    }
+
+    private checkUrl(url: string): boolean {
+        let found = this.moduleConfig.resourceServer.allowedUrls.find(u =&gt; url.startsWith(u));
+        return !!found;
+    }
+
+    public intercept(req: HttpRequest&lt;any&gt;, next: HttpHandler): Observable&lt;HttpEvent&lt;any&gt;&gt; {
+
+        let url = req.url.toLowerCase();
+
+        if (!this.moduleConfig) return next.handle(req);
+        if (!this.moduleConfig.resourceServer) return next.handle(req);
+        if (!this.moduleConfig.resourceServer.allowedUrls) return next.handle(req);
+        if (!this.checkUrl(url)) return next.handle(req);
+
+        let sendAccessToken = this.moduleConfig.resourceServer.sendAccessToken;
+
+        if (sendAccessToken) {
+
+            let token = this.authStorage.getItem(&#39;access_token&#39;);
+            let header = &#39;Bearer &#39; + token;
+
+            let headers = req.headers
+                                .set(&#39;Authorization&#39;, header);
+
+            req = req.clone({ headers });
+        }
+
+        return next.handle(req).catch(err =&gt; this.errorHandler.handleError(err));
+
+    }
+
+}</code></pre></div>
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'additional-page';
+            var COMPODOC_CURRENT_PAGE_URL = 'working-with-httpinterceptors.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
