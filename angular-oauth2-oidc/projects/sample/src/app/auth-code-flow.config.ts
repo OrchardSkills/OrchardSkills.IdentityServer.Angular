@@ -2,7 +2,7 @@ import { AuthConfig } from 'angular-oauth2-oidc';
 import { useSilentRefreshForCodeFlow } from '../flags';
 
 export const authCodeFlowConfig: AuthConfig = {
-  issuer: 'https://idsvr4.azurewebsites.net',
+  issuer: 'https://localhost:5000',
 
   // URL of the SPA to redirect the user to after login
   redirectUri:

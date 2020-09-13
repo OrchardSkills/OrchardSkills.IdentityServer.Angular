@@ -4,7 +4,7 @@ import { AuthConfig } from 'angular-oauth2-oidc';
 
 export const authConfig: AuthConfig = {
   // Url of the Identity Provider
-  issuer: 'https://idsvr4.azurewebsites.net',
+  issuer: 'https://localhost:5000',
 
   // URL of the SPA to redirect the user to after login
   // redirectUri: window.location.origin
