@@ -2,7 +2,7 @@
 
 An Angular Client Accessing an API through Code Flow Authorization using Identity Server
 
-[How to run angular with https](https://www.mmbyte.com/article/12037.html)
+## [How to run angular with https](https://www.mmbyte.com/article/12037.html)
 
 ng s -o ---ssl true //It will run on https://localhost:4200. But, if you have .crt and .key file, then add that attribute also
 
@@ -99,3 +99,19 @@ Now use the inline command to add ssl key and certificate or add to angular.json
 You will not see any "not secure",and it will show "secure" if you click on lock icon adjacent to address bar
 
 But, if you will run the application in other's laptop it will show "not secure" as they have not installed the certificate(trusted)
+
+## [How to make Chrome trust Windows system root CA certificate?](https://superuser.com/questions/1315820/how-to-make-chrome-trust-windows-system-root-ca-certificate)
+
+Chrome uses the Certificate Store on Windows for validating certificates. If Chrome is complaining, then the certificate is not installed on Trusted Root Certificates on your local machine or the certificate's CN (Common Name) is not matching with the domain name you are accessing.
+
+In order to install the certificate on trusted roots,
+
+Click on the red alert icon on the top left of the address bar, form drop down menu select certificate.
+
+Then navigate to the detail tab on the certificate window, from bottom right click on Copy to File, Export the certificate in DER encoding set the name of the certificate and Finish.
+
+Then open certmgr.msc expend the Trusted Root Certificate Authorities tree.
+
+Right click on Certificate from the drop down select all task then click import select your certificate chose Place all certificates in the following store and proceed to finish.
+
+Relaunch Chrome.
